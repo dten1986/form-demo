@@ -24,6 +24,9 @@
 				<div id="messages" class="alert alert-success" data-ng-show="messages" data-ng-bind="messages"></div>
 				<div data-ng-repeat="field in fields" class="form-group">
 					<label for="{{field.id}}" style="text-transform: capitalize;">{{ field.type }}</label>
+					<button type="button" class="close" ng-click="removeField(field.id)">
+						<span aria-hidden="true">&times;</span>
+					</button>
 					<span class="label label-danger" data-ng-show="submitted && field.required && !demoForm[field.id].$viewValue">Required!</span>
 					<input data-ng-if="field.type == 'text'" class="form-control" type="text" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="text" placeholder="Text here..." ng-required="{{field.required}}">
 					<textarea data-ng-if="field.type == 'textarea'" class="form-control" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="textarea" ng-required="{{field.required}}"></textarea>
@@ -33,6 +36,7 @@
 							<option data-ng-repeat="option in field.options">{{ option }}</option>
 						</select>
 					</div>
+					
 				</div>
 
 				<button type="submit" data-ng-disabled="progress.active()" data-ng-click="submit(demoForm)" class="btn btn-primary">Submit</button>

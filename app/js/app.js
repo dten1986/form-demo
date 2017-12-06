@@ -33,6 +33,15 @@ myApp.controller('form', ['$scope', function($scope) {
 		
 	};
 	
+	$scope.removeField = function(id) {
+		for (var i = 0; i < $scope.fields.length; i++) {
+			if ($scope.fields[i].id == id) {
+				$scope.fields.splice(i, 1);
+				break;
+			}
+		}
+	}
+	
 	$scope.$watch('selType', function(newVal, oldVal) {
 		if (newVal) {
 			$scope.addNew = false;
@@ -54,13 +63,13 @@ myApp.controller('form', ['$scope', function($scope) {
 	
 	$scope.submit = function(form) {
 		$scope.submitted = true;
-console.log(form);
+
 		if (form.$invalid)
 			return;
 
 		var config = {
 			params : {
-				'callback' : 'JSON_CALLBACK'
+				//'callback' : 'JSON_CALLBACK'
 			},
 		};
 		
