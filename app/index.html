@@ -25,11 +25,11 @@
 				<div data-ng-repeat="field in fields" class="form-group">
 					<label for="{{field.id}}" style="text-transform: capitalize;">{{ field.type }}</label>
 					<span class="label label-danger" data-ng-show="submitted && field.required && !demoForm[field.id].$viewValue">Required!</span>
-					<input data-ng-if="field.type == 'text'" class="form-control" type="text" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="text" placeholder="Text here..." {{ field.required }}>
-					<textarea data-ng-if="field.type == 'textarea'" class="form-control" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="textarea" {{field.required}}></textarea>
-					<input data-ng-if="field.type == 'checkbox'" type="checkbox" class="form-check-input" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="checkbox" style="margin: 7px;" {{field.required}}>
+					<input data-ng-if="field.type == 'text'" class="form-control" type="text" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="text" placeholder="Text here..." ng-required="{{field.required}}">
+					<textarea data-ng-if="field.type == 'textarea'" class="form-control" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="textarea" ng-required="{{field.required}}"></textarea>
+					<input data-ng-if="field.type == 'checkbox'" type="checkbox" class="form-check-input" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="checkbox" style="margin: 7px;" ng-required="{{field.required}}">
 					<div data-ng-if="field.type == 'select'">
-						<select class="form-control" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="select" {{field.required}}>
+						<select class="form-control" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="select" ng-required="{{field.required}}">
 							<option data-ng-repeat="option in field.options">{{ option }}</option>
 						</select>
 					</div>
