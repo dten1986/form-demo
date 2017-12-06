@@ -20,7 +20,7 @@ myApp.controller('form', ['$scope', function($scope) {
 
 		var xhr = new XMLHttpRequest();
 		
-		xhr.open('GET', 'response.json/submit?' + JSON.stringify(config));
+		xhr.open('GET', 'response.json?submit=' + JSON.stringify(config));
 		
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4 && xhr.responseText) {
