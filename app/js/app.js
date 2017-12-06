@@ -2,21 +2,71 @@
 var myApp = angular.module('myApp', []);
 
 myApp.controller('form', ['$scope', function($scope) {
+	$scope.fields = [
+		{
+			id: 1,
+			type: 'text',
+			required: true
+		},
+		{
+			id: 2,
+			type: 'textarea',
+		},
+		{
+			id: 3,
+			type: 'select',
+			options: [1, 2, 3, 4, 5]
+		},
+		{
+			id: 4,
+			type: 'checkbox',
+			checked: false
+		}
+	];
+	
+	$scope.addNewField = function() {
+		if (!$scope.addNew)
+			$scope.addNew = true;
+		else
+			$scope.addNew = false;
+		
+		
+	};
+	
+	$scope.$watch('selType', function(newVal, oldVal) {
+		if (newVal) {
+			$scope.addNew = false;
+			
+			var newField = {
+				'id': $scope.fields.length + 1,
+				'type': newVal
+			};
+			
+			if (newVal == 'select')
+				newField.options = [1, 2, 3];
+			
+			if (newVal == 'checkbox')
+				newField.checked = false;
+			
+			$scope.fields.push(newField);
+		}
+	});
+	
 	$scope.submit = function(form) {
 		$scope.submitted = true;
-
+console.log(form);
 		if (form.$invalid)
 			return;
 
-		 var config = {
+		var config = {
 			params : {
-				'callback' : 'JSON_CALLBACK',
-				'text' : form.text.$viewValue,
-				'textarea' : form.textarea.$viewValue,
-				'select' : form.select.$viewValue,
-				'checkbox' : form.checkbox.$viewValue
+				'callback' : 'JSON_CALLBACK'
 			},
 		};
+		
+		for (var key in form)
+			if (key.indexOf('$') < 0)
+				config.params[key] = form[key].$viewValue;
 
 		var xhr = new XMLHttpRequest();
 		
@@ -24,10 +74,13 @@ myApp.controller('form', ['$scope', function($scope) {
 		
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4 && xhr.responseText) {
-				console.log(xhr.responseText);
 				var resp = JSON.parse(xhr.responseText);
 				if (resp.status == 'OK') {
-					$scope.messages = resp.info + '\nSent data:\ntext: ' + config.params.text + ';\ntextarea: ' + config.params.textarea + ';\nselect: ' + config.params.select + ';\ncheckbox: ' + config.params.checkbox;
+					var data = '';
+					for (var id in config.params)
+						data += '\n' + id + ': ' + config.params[id] + ';';
+					
+					$scope.messages = resp.info + '\nSent data:\n' + data;
 					$scope.$apply();
 				}
 			}

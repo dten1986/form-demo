@@ -22,34 +22,33 @@
 			<form name="demoForm" novalidate role="form">
 				<div data-ng-show="progress.active()" style="color: red; font-size: 50px;">Sending…</div>
 				<div id="messages" class="alert alert-success" data-ng-show="messages" data-ng-bind="messages"></div>
-				<div class="form-group">
-					<label for="text">Text</label>
-					<span class="label label-danger" data-ng-show="submitted && demoForm.text.$error.required">Required!</span>
-					<input class="form-control" type="text" id="text" name="text"  data-ng-model="text" required>
+				<div data-ng-repeat="field in fields" class="form-group">
+					<label for="{{field.id}}" style="text-transform: capitalize;">{{ field.type }}</label>
+					<span class="label label-danger" data-ng-show="submitted && field.required && !demoForm[field.id].$viewValue">Required!</span>
+					<input data-ng-if="field.type == 'text'" class="form-control" type="text" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="text" placeholder="Text here..." required="{{field.required}}">
+					<textarea data-ng-if="field.type == 'textarea'" class="form-control" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="textarea" required="{{field.required}}"></textarea>
+					<input data-ng-if="field.type == 'checkbox'" type="checkbox" class="form-check-input" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="checkbox" style="margin: 7px;" required="{{field.required}}">
+					<div data-ng-if="field.type == 'select'">
+						<select class="form-control" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="select" required="{{field.required}}">
+							<option data-ng-repeat="option in field.options">{{ option }}</option>
+						</select>
+					</div>
 				</div>
-				<div class="form-group">
-					<label for="textarea">Textarea</label>
-					<textarea class="form-control" id="textarea" name="textarea" data-ng-model="textarea"></textarea>
-				</div>
-				<div class="form-group">
-					<label for="select">Select</label>
-					<select class="form-control" id="select" name="select" data-ng-model="select">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-					</select>
-				</div>
-				<div class="form-check">
-					<label class="form-check-label">
-						<input type="checkbox" class="form-check-input" id="checkbox" name="checkbox" data-ng-model="checkbox">
-						Check
-					</label>
-				</div>
+
 				<button type="submit" data-ng-disabled="progress.active()" data-ng-click="submit(demoForm)" class="btn btn-primary">Submit</button>
 				<button type="reset" class="btn btn-secondary">Reset</button>
+				<button class="btn btn-success" ng-click="addNewField()">+ Add field</button>
 			</form>
+			<br />
+			<div class="form-group" data-ng-show="addNew" style="background-color: #cccccc; padding: 20px; border-radius: 5px;">
+				<label for="selType">Select type of new input</label>
+				<select class="form-control" id="selType" data-ng-model="selType">
+					<option>text</option>
+					<option>textarea</option>
+					<option>checkbox</option>
+					<option>select</option>
+				</select>
+			</div>
 		</div>
 	</div>
 
