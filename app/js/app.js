@@ -24,6 +24,7 @@ myApp.controller('form', ['$scope', function($scope) {
 		
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4 && xhr.responseText) {
+				console.log(xhr.responseText);
 				var resp = JSON.parse(xhr.responseText);
 				if (resp.status == 'OK') {
 					$scope.messages = resp.info + '\nSent data:\ntext: ' + config.params.text + ';\ntextarea: ' + config.params.textarea + ';\nselect: ' + config.params.select + ';\ncheckbox: ' + config.params.checkbox;
