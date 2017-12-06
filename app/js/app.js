@@ -6,21 +6,24 @@ myApp.controller('form', ['$scope', function($scope) {
 		{
 			id: 1,
 			type: 'text',
-			required: true
+			required: 'required'
 		},
 		{
 			id: 2,
 			type: 'textarea',
+			required: ''
 		},
 		{
 			id: 3,
 			type: 'select',
-			options: [1, 2, 3, 4, 5]
+			options: [1, 2, 3, 4, 5],
+			required: ''
 		},
 		{
 			id: 4,
 			type: 'checkbox',
-			checked: false
+			checked: false,
+			required: ''
 		}
 	];
 	
@@ -39,7 +42,8 @@ myApp.controller('form', ['$scope', function($scope) {
 			
 			var newField = {
 				'id': $scope.fields.length + 1,
-				'type': newVal
+				'type': newVal,
+				'required': ''
 			};
 			
 			if (newVal == 'select')
