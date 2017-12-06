@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>My AngularJS App</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+<body>
+
+	<div style="padding: 20px;">
+		<div data-ng-controller="form">
+			<form name="demoForm" novalidate role="form">
+				<div data-ng-show="progress.active()" style="color: red; font-size: 50px;">Sending…</div>
+				<div id="messages" class="alert alert-success" data-ng-show="messages" data-ng-bind="messages"></div>
+				<div class="form-group">
+					<label for="text">Text</label>
+					<span class="label label-danger" data-ng-show="submitted && demoForm.text.$error.required">Required!</span>
+					<input class="form-control" type="text" id="text" name="text"  data-ng-model="text" required>
+				</div>
+				<div class="form-group">
+					<label for="textarea">Textarea</label>
+					<textarea class="form-control" id="textarea" name="textarea" data-ng-model="textarea"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="select">Select</label>
+					<select class="form-control" id="select" name="select" data-ng-model="select">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					</select>
+				</div>
+				<div class="form-check">
+					<label class="form-check-label">
+						<input type="checkbox" class="form-check-input" id="checkbox" name="checkbox" data-ng-model="checkbox">
+						Check
+					</label>
+				</div>
+				<button type="submit" data-ng-disabled="progress.active()" data-ng-click="submit(demoForm)" class="btn btn-primary">Submit</button>
+				<button type="reset" class="btn btn-secondary">Reset</button>
+			</form>
+		</div>
+	</div>
+
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
