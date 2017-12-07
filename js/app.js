@@ -2,6 +2,24 @@
 var myApp = angular.module('myApp', []);
 
 myApp.controller('form', ['$scope', function($scope) {
+	function _xhr(url, callback) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', url);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.responseText)
+				callback(JSON.parse(xhr.responseText));
+		}
+				
+		xhr.send();
+	}
+	
+	// Saved form data
+	_xhr('form-handler.php', function(resp) {
+		$scope.form_data = resp;
+		$scope.$apply();
+	})
+	
+	$scope.form_data = '';
 	$scope.fields = [
 		{
 			id: 1,
@@ -67,35 +85,20 @@ myApp.controller('form', ['$scope', function($scope) {
 		if (form.$invalid)
 			return;
 
-		var config = {
-			params : {
-				//'callback' : 'JSON_CALLBACK'
-			},
-		};
+		var config = {};
 		
 		for (var key in form)
 			if (key.indexOf('$') < 0)
-				config.params[key] = form[key].$viewValue;
+				config[key] = '' + form[key].$viewValue;
 
-		var xhr = new XMLHttpRequest();
-		
-		xhr.open('GET', 'response.json?submit=' + JSON.stringify(config));
-		
-		xhr.onreadystatechange = function() {
-			if (xhr.readyState == 4 && xhr.responseText) {
-				var resp = JSON.parse(xhr.responseText);
-				if (resp.status == 'OK') {
-					var data = '';
-					for (var id in config.params)
-						data += '\n' + id + ': ' + config.params[id] + ';';
-					
-					$scope.messages = resp.info + '\nSent data:\n' + data;
-					$scope.$apply();
-				}
+		_xhr('form-handler.php?submit=' + JSON.stringify(config), function(resp) {
+			if (resp.status == 'OK') {
+				$scope.messages = resp.info;
+				$scope.form_data = resp.data;
+				$scope.submitted = false;
+				$scope.$apply();
 			}
-		}
-		
-		xhr.send(config);
+		});
 	};
 	
 	
