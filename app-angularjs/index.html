@@ -17,48 +17,52 @@
 </head>
 <body>
 
-	<div style="padding: 20px;">
-		
-	
-		<div data-ng-controller="form">
-			<div class="alert alert-success">
-				<h3>Form data:</h3>
-				<div id="results">{{form_data}}</div>
-			</div>
-		
-			<form name="demoForm" novalidate role="form">
-				<div data-ng-show="progress.active()" style="color: red; font-size: 50px;">Sending…</div>
-				<div id="messages" class="alert alert-success" data-ng-show="messages" data-ng-bind="messages"></div>
-				<div data-ng-repeat="field in fields" class="form-group">
-					<label for="{{field.id}}" style="text-transform: capitalize;">{{ field.type }}</label>
-					<button type="button" class="close" ng-click="removeField(field.id)">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<span class="label label-danger" data-ng-show="submitted && field.required && !demoForm[field.id].$viewValue">Required!</span>
-					<input data-ng-if="field.type == 'text'" class="form-control" type="text" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="text" placeholder="Text here..." ng-required="{{field.required}}">
-					<textarea data-ng-if="field.type == 'textarea'" class="form-control" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="textarea" ng-required="{{field.required}}"></textarea>
-					<input data-ng-if="field.type == 'checkbox'" type="checkbox" class="form-check-input" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="checkbox" style="margin: 7px;" ng-required="{{field.required}}">
-					<div data-ng-if="field.type == 'select'">
-						<select class="form-control" id="{{field.id}}" name="{{field.type + '_' + field.id}}" data-ng-model="select" ng-required="{{field.required}}">
-							<option data-ng-repeat="option in field.options">{{ option }}</option>
-						</select>
-					</div>
-					
+	<div style="padding: 20px;">	
+		<div ng-controller="list">
+			<form name="addItem" novalidate role="form" ng-show="formVisible">
+				<h2>{{formVal.title}}</h2>
+				<div ng-show="progress.active()" style="color: red; font-size: 50px;">Sending…</div>
+				<div id="messages" class="alert alert-success" ng-show="messages" ng-bind="messages"></div>
+				<div class="form-group">
+					<label for="textItem">Text</label>
+					<span class="label label-danger" ng-show="submitted && !addItem.text.$viewValue">Required!</span>
+					<input class="form-control" type="text" id="textItem" name="text" ng-model="formVal.text" placeholder="Text here... required!" required>
 				</div>
-
-				<button type="submit" data-ng-disabled="progress.active()" data-ng-click="submit(demoForm)" class="btn btn-primary">Submit</button>
-				<button type="reset" class="btn btn-secondary">Reset</button>
-				<button class="btn btn-success" ng-click="addNewField()">+ Add field</button>
+				<div class="form-group">
+					<label for="textareaItem">Textarea</label>
+					<textarea class="form-control" id="textareaItem" name="textarea" ng-model="formVal.textarea"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="checkboxItem">Checkbox</label>
+					<input type="checkbox" id="checkboxItem" name="checkbox" ng-model="formVal.checkbox">
+				</div>
+				<div class="form-group">
+					<label for="selectItem">Select</label>
+					<select class="form-control" id="selectItem" name="select" ng-model="formVal.select">
+						<option>Option 1</option>
+						<option>Option 2</option>
+						<option>Option 3</option>
+					</select>
+				</div>
+				<button type="submit" ng-disabled="progress.active()" ng-click="submit(addItem)" class="btn btn-primary">Submit</button>
+				<button type="reset" class="btn btn-secondary" ng-click="closeForm()">Reset</button>
 			</form>
 			<br />
-			<div class="form-group" data-ng-show="addNew" style="background-color: #cccccc; padding: 20px; border-radius: 5px;">
-				<label for="selType">Select type of new input</label>
-				<select class="form-control" id="selType" data-ng-model="selType">
-					<option>text</option>
-					<option>textarea</option>
-					<option>checkbox</option>
-					<option>select</option>
-				</select>
+			<button class="btn btn-success" ng-click="openForm()" ng-show="!formVisible">+ Add new item</button>
+			<br />
+			<div id="list">
+				<h2>List</h2>
+				<div ng-repeat="item in list" class="item alert alert-success">
+					<button type="button" class="close" ng-click="removeItem(item)">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4>Item {{$index+1}}:</h4>
+					<div class="group" ng-repeat="(key, value) in item">
+						<b style="text-transform: capitalize;">{{ key }}</b>
+						<span>{{ value }}</span>
+					</div>
+					<button class="btn btn-success" ng-click="editItem($index)">+ Edit item</button>
+				</div>
 			</div>
 		</div>
 	</div>
