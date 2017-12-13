@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>My VueJS App</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+
+	<div style="padding: 20px;">
+		<div id="addItem">
+			<div v-show="formSubmit" style="color: red; font-size: 50px;">Sending…</div>
+			<div id="messages" class="alert alert-success" v-show="messages.length > 0">{{ messages }}</div>
+			<form v-on:submit="onSubmit" v-show="formVisible">
+				<h2>{{ formVal.title }}</h2>
+				<div class="form-group">
+					<label for="textItem">Text</label>
+				<!--	<span class="label label-danger" v-show="submitted && !addItem.text.$viewValue">Required!</span>-->
+					<input class="form-control" type="text" id="textItem" name="text" v-model="formVal.text" placeholder="Text here... required!" required>
+				</div>
+				<div class="form-group">
+					<label for="textareaItem">Textarea</label>
+					<textarea class="form-control" id="textareaItem" name="textarea" v-model="formVal.textarea"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="checkboxItem">Checkbox</label>
+					<input type="checkbox" id="checkboxItem" name="checkbox" v-model="formVal.checkbox">
+				</div>
+				<div class="form-group">
+					<label for="selectItem">Select</label>
+					<select class="form-control" id="selectItem" name="select" v-model="formVal.select">
+						<option>Option 1</option>
+						<option>Option 2</option>
+						<option>Option 3</option>
+					</select>
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+				<button type="reset" class="btn btn-secondary" v-on:click="hideForm">Reset</button>
+			</form>
+			<br />
+			<button class="btn btn-success" v-on:click="showForm" v-show="!formVisible">+ Add new item</button>
+			<br />
+			<div id="list">
+				<h2>List</h2>
+				<div v-if="list.length">
+					<div v-for="(item, index) in list" class="item alert alert-success">
+						<button type="button" class="close" v-on:click="removeItem(item)">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4>Item {{ index+1 }}:</h4>
+						<div class="group" v-for="(value, key) in item">
+							<b style="text-transform: capitalize;">{{ key }}</b>
+							<span>{{ value }}</span>
+						</div>
+						<button class="btn btn-success" v-on:click="editItem(index)">+ Edit item</button>
+					</div>
+				</div>
+				<div v-else class="item alert alert-success">No items in list</div>
+			</div>
+		</div>
+	</div>
+
+  <script src="js/vue.min.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
